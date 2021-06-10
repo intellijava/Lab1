@@ -1,0 +1,6 @@
+responsetype.GETFileResponse
+responsetype.GETJsonResponse
+responsetype.GETTextResponse
+responsetype.POSTJsonResponse
+responsetype.POSTTextResponse
+responsetype.HEADJsonResponse

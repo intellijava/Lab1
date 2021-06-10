@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  mydb:
+    image: mysql:latest
+    container_name: mydb
+    environment:
+      - ACCEPT_EULA=Y
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=web1_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=root
+    volumes:
+      - ./mysqlstorage:/var/lib/mysql
+    #    - ./dao/src/scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+    restart: "unless-stopped"
+  serverexample:
+    container_name: myserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: serverexample
+    depends_on:
+      - mydb
+    volumes:
+      - ./core/target/web:/app/web
+    ports:
+      - "5050:5050"
+    restart: "no"
