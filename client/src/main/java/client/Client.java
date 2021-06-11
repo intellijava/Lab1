@@ -31,7 +31,6 @@ public class Client {
         System.out.println("\n\n");
 
 
-        System.out.println("-------------------------HTTPost with different Files and formats-----------------------------");
         System.out.println("--------------------------HTTPPost with Json response-------------------------------------------");
         DoPost.httpPOSTJson();
 
