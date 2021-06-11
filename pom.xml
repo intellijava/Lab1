@@ -17,6 +17,7 @@
         <module>allentity</module>
         <module>spi</module>
         <module>allplugins</module>
+        <module>client</module>
     </modules>
     <build>
         <plugins>

@@ -3,4 +3,6 @@ responsetype.GETJsonResponse
 responsetype.GETTextResponse
 responsetype.POSTJsonResponse
 responsetype.POSTTextResponse
+responsetype.HEADFileResponse
 responsetype.HEADJsonResponse
+responsetype.HEADTextResponse

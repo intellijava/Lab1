@@ -12,10 +12,10 @@ import java.nio.charset.StandardCharsets;
 public class GETTextResponse implements ResponseDecoder {
 
     @Override
-    public Response sendResponse(Response response, Request request) throws IOException {
+    public Response sendResponse(Response response, Request request){
         byte[] data = ("A simple plain text!").getBytes(StandardCharsets.UTF_8);
         response.setContentType("text/plain");
-        response.setContentLength(data.length);
+        response.setContentLength((long) data.length);
         if (data.length != 0) {
             response.setHeader("HTTP/1.1 200 OK\r\nContent-Type: "
                     + response.getContentType() + "\r\nContent-length: "

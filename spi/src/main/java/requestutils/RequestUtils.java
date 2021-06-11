@@ -39,37 +39,25 @@ public class RequestUtils {
         return headers;
     }
 
-//    private static Integer parseContentLength(String input) {
-//        String[] params = (urlDecoding(input)).split(" ");
-//        for (int i = 0; i < params.length - 1; i++) {
-//            if (params[i].trim().equalsIgnoreCase("Content-Length:")) {
-//                Integer temp = Integer.parseInt((params[i + 1]).trim());
-//                return temp;
-//            }
-//        }
-//        return 0;
-//    }
-
     private static String parseUrl(String input) {
         String[] result = input.split(" ");
         String[] params = result[1].split("\\?");
-
         return urlDecoding(params[0]);
     }
 
     private static HashMap< String, String > parseUrlParams(String input) {
-        HashMap< String, String > request = new HashMap<>();
+        HashMap< String, String > hashMap = new HashMap<>();
         String[] result = input.split(" ");
         String[] params = result[1].split("\\?");
         if (params.length > 1) {
             String[] paramsPair = params[1].split("&");
             for (String s : paramsPair) {
                 String[] paramsValues = s.split("=");
-                request.put(urlDecoding(paramsValues[0]).trim(), urlDecoding(paramsValues[1]).trim());
+                hashMap.put(urlDecoding(paramsValues[0]).trim(), urlDecoding(paramsValues[1]).trim());
             }
-            return request;
+            return hashMap;
         }
-        return request;
+        return hashMap;
     }
 
     private static String urlDecoding(String input) {
@@ -87,14 +75,5 @@ public class RequestUtils {
             return HTTPRequestType.POST;
 
         throw new RuntimeException("Invalid type");
-    }
-
-    //Example of switch expressions to handle all possible enum cases without needing default case.
-    public static String handleRequest(Request request) {
-        return switch (request.type) {
-            case GET -> "GET";
-            case HEAD -> "HEAD";
-            case POST -> "POST";
-        };
     }
 }

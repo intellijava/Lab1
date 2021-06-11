@@ -18,44 +18,10 @@ public class CourseDAO {
             em.getTransaction().commit();
         } catch (RuntimeException e){
             System.out.println("Data record already exists!");
+            return null;
         }
         em.close();
         return course;
-    }
-
-    public void deleteCourse(int id) {
-        EntityManager em = emf.createEntityManager();
-        Course course = em.find(Course.class, id);
-        if(course != null) {
-            em.getTransaction().begin();
-            em.remove(em.merge(course));
-            em.getTransaction().commit();
-        }
-        em.close();
-    }
-
-    public void deleteCourse(Course course) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(em.merge(course));
-        em.getTransaction().commit();
-        em.close();
-    }
-
-    public Course findCourse(int id) {
-        EntityManager em = emf.createEntityManager();
-        Course course = null;
-        try {
-            course = em.find(Course.class, id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if(course != null) {
-            em.close();
-            return course;
-        }
-        em.close();
-        return null;
     }
 
     public Course findCourse(String courseName) {
@@ -76,23 +42,6 @@ public class CourseDAO {
         return null;
     }
 
-    public void updateCourse(Course course) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.merge(course);
-        em.getTransaction().commit();
-        em.close();
-    }
-
-    public List< Course > findCourseByName(String courseName) {
-        EntityManager em = emf.createEntityManager();
-        TypedQuery< Course > query = em.createNamedQuery("Course.findByCourseTitle", Course.class);
-        query.setParameter("courseTitle", courseName);
-        List< Course > resultList = (List< Course >) query.getResultList();
-        em.close();
-        return resultList;
-    }
-
     public List< Course > showAllCourses() {
         EntityManager em = emf.createEntityManager();
         TypedQuery< Course > query = em.createNamedQuery("Course.findAll", Course.class);
@@ -105,6 +54,4 @@ public class CourseDAO {
         em.close();
         return resultList;
     }
-
-
 }

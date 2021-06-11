@@ -6,5 +6,7 @@ public enum HTTPResponseType {
     GETTEXT,
     POSTTEXT,
     POSTJSON,
-    HEADJSON
+    HEADJSON,
+    HEADTEXT,
+    HEADFILE
 }

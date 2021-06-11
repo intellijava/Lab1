@@ -1,10 +1,12 @@
 package responseutils;
 
 public class Response {
+
     String header;
-    Integer contentLength;
+    Long contentLength;
     String contentType;
     byte[] content;
+    HTTPResponseType type;
 
     public HTTPResponseType getType() {
         return type;
@@ -14,8 +16,6 @@ public class Response {
         this.type = type;
     }
 
-    HTTPResponseType type;
-
     public String getHeader() {
         return header;
     }
@@ -24,11 +24,11 @@ public class Response {
         this.header = header;
     }
 
-    public int getContentLength() {
+    public Long getContentLength() {
         return contentLength;
     }
 
-    public void setContentLength(int contentLength) {
+    public void setContentLength(Long contentLength) {
         this.contentLength = contentLength;
     }
 

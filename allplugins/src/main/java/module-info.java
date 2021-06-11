@@ -12,6 +12,8 @@ module response.plugins {
             GETJsonResponse,
             GETTextResponse,
             HEADJsonResponse,
+            HEADTextResponse,
+            HEADFileResponse,
             POSTJsonResponse,
             POSTTextResponse;
 }

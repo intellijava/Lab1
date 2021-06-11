@@ -17,9 +17,9 @@ import static java.util.Objects.nonNull;
 public class Main {
     static ExecutorService executorService = Executors.newCachedThreadPool();
     static List< ResponseDecoder > listResponseServiceLoader = new ArrayList<>();
-    public static String requestInputString = " ";
 
     public static void main(String[] args) {
+
 
 
         ServiceLoader< ResponseDecoder > responseServiceLoader = ServiceLoader.load(ResponseDecoder.class);
@@ -30,6 +30,7 @@ public class Main {
                 Socket client = serverSocket.accept();
                 System.out.println("Connection from : " + client.getInetAddress());
                 executorService.submit(() -> handleConnection(client));
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,8 +39,10 @@ public class Main {
 
     private static void handleConnection(Socket client) {
         try {
+
             var inputFromClient = client.getInputStream();
             var request = readRequest(inputFromClient);
+
 
             var outputToClient = client.getOutputStream();
             var response = ResponseUtils.parseHttpResponseType(request);
@@ -48,6 +51,7 @@ public class Main {
             response = generateResponse(request, response);
 
             sendResponse(client, inputFromClient, outputToClient, response);
+            request = null;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,7 +67,8 @@ public class Main {
         var separatorIndex = result.toString().indexOf("\r\n\r\n");
         var request = RequestUtils.parseHttpRequest(result.toString().substring(0, separatorIndex));
         request.setContent(result.toString().substring(separatorIndex + 4).getBytes(StandardCharsets.UTF_8));
-
+        result.setLength(0);
+        separatorIndex=0;
         return request;
     }
 
@@ -82,6 +87,10 @@ public class Main {
             if (nonNull(annotation) && annotation.value().equals("/" + response.getType())) {
                 response = responseDecoder.sendResponse(response, request);
                 break;
+            }
+            else{
+                response.setHeader("HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n");
+                response.setContent(new byte[0]);
             }
         }
         return response;

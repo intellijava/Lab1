@@ -14,12 +14,13 @@ import java.nio.file.Path;
 @ResponseType("/GETFILE")
 public class GETFileResponse implements ResponseDecoder {
 
-    public Response sendResponse(Response response, Request request) throws IOException {
-        byte[] data = new byte[0];
-        File file = Path.of("core", "target", "web", request.getUrl().trim()).toFile();
-        //File file = Path.of("app", "web", fileName).toFile();
+    public Response sendResponse(Response response, Request request){
+
+//        File file = Path.of("core", "target", "web", request.getUrl().trim()).toFile();
+        File file = Path.of("app", "web", request.getUrl().trim()).toFile();
         if (!(file.exists() && !file.isDirectory())) {
             response.setHeader("HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n");
+            response.setContent(new byte[0]);
         } else {
             getFileResponse(response, file);
         }
@@ -32,7 +33,7 @@ public class GETFileResponse implements ResponseDecoder {
             data = new byte[(int) file.length()];
             fileInputStream.read(data);
             response.setContentType(Files.probeContentType(file.toPath()));
-            response.setContentLength(data.length);
+            response.setContentLength((long) data.length);
             response.setHeader("HTTP/1.1 200 OK\r\nContent-Type: "
                     + response.getContentType() + "\r\nContent-length: "
                     + response.getContentLength() + "\r\n\r\n");

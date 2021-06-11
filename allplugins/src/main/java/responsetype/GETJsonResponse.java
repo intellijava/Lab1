@@ -16,7 +16,7 @@ import java.util.Map;
 @ResponseType("/GETJSON")
 public class GETJsonResponse implements ResponseDecoder {
 
-    public Response sendResponse(Response response, Request request) throws IOException {
+    public Response sendResponse(Response response, Request request){
         Gson gson = new Gson();
         String json = "";
         CourseDAO courseDAO = new CourseDAO();
@@ -27,16 +27,17 @@ public class GETJsonResponse implements ResponseDecoder {
         } else if (request.getUrlParams().size() == 1) {
             Map.Entry< String, String > entry = request.getUrlParams().entrySet().iterator().next();
             Course course = courseDAO.findCourse(entry.getValue());
-            if (course == null)
+            if (course == null) {
                 response.setHeader("HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n");
-            else
+                response.setContent(new byte[0]);
+            } else
                 json = gson.toJson(course);
         } else {
             response.setHeader("HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n");
         }
         byte[] data = json.getBytes(StandardCharsets.UTF_8);
         response.setContentType("application/json");
-        response.setContentLength(data.length);
+        response.setContentLength((long) data.length);
         if (data.length != 0) {
             response.setHeader("HTTP/1.1 200 OK\r\nContent-Type: "
                     + response.getContentType() + "\r\nContent-length: "
